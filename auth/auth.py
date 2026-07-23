@@ -20,7 +20,7 @@ def register():
         return jsonify({"success": False, "message": "All fields are required"}), 400
 
     if not fullname or not email or not password or not role:
-        return jsonify({"error": "All fields are required "}), 400
+        return jsonify({"success": False, "message": "All fields are required"}), 400
 
     try:
         validate_email(email)
@@ -28,8 +28,6 @@ def register():
         return jsonify({"success": False, "message": str(e)}), 400
     conn = None
     cursor = None
-    conn = get_connection()
-    cursor = conn.cursor()
 
     cursor.execute(
             "SELECT id FROM Users WHERE email = %s",
@@ -43,7 +41,7 @@ def register():
         
 
     if len(password) < 6:
-        return jsonify({"error": "Password must be at least 6 characters long"}), 400
+        return jsonify({"success": False, "message": "Password must be at least 6 characters long"}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
     verification_token = secrets.token_urlsafe(32)
@@ -72,7 +70,7 @@ def register():
 
     except Exception as e:
          return jsonify({
-            "sucess": False, 
+            "success": False, 
             "message": "db connection failed"
         }), 500
 
@@ -120,6 +118,6 @@ def verify_email(token):
     cursor.close()
 
     return jsonify({
-        "succes": True,
+        "success": True,
         "message": "Email verified successfully."
     })
