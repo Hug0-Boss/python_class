@@ -56,7 +56,7 @@ def register():
        cursor = conn.cursor()
 
        cursor.execute(
-             "INSERT INTO users (fullname, email, password, role, verification_token) VALUES (%s, %s, %s, %s, %s)",
+             "INSERT INTO Users (fullname, email, password, role, verification_token) VALUES (%s, %s, %s, %s, %s)",
               (fullname, email, hashed_password, role, verification_token),
             )
 
@@ -95,7 +95,7 @@ def verify_email(token):
 
     cursor.execute(
         """
-        SELECT id FROM users WHERE verification_token=%s
+        SELECT id FROM Users WHERE verification_token=%s
         """, (token)
     )
 
