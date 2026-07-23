@@ -16,8 +16,8 @@ def register():
     password = data.get("password")
     role = data.get("role", "USER").upper()
 
-    if role not in ["USER" "INSTRUCTOR"]:
-        return jsonify({"success": False, "message": "All fileds are required"}), 400
+    if role not in ["USER", "INSTRUCTOR"]:
+        return jsonify({"success": False, "message": "All fields are required"}), 400
 
     if not fullname or not email or not password or not role:
         return jsonify({"error": "All fields are required "}), 400
