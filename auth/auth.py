@@ -3,7 +3,7 @@ from email_validator import validate_email, EmailNotValidError
 from extension import bcrypt
 from db import get_connection
 import secrets
-from email_service import send_verification_email
+from email_service import send_verification_mail
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -63,8 +63,8 @@ def register():
        conn.commit()
        cursor.close()
 
-       verification_link = (f"ht")
-       send_verification_email(email, fullname, verification_link)
+       verification_link = (f"https://python-class-4k2p.onrender.com/api/auth/verify-email/{verification_token}")
+       send_verification_mail(email, fullname, verification_link)
        return jsonify({
             "success": True,
             "message": "User registered successfully."
