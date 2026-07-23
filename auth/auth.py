@@ -36,7 +36,7 @@ def register():
             (email, ),
     )
 
-    if cursor.fetchome():
+    if cursor.fetchone():
         cursor.close()
         conn.close()
         return jsonify({"success": False, "message": "Email already exists"}), 409
