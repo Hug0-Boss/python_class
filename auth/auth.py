@@ -98,7 +98,7 @@ def verify_email(token):
 
     cursor.execute(
         """
-        UPDATE users
+        UPDATE Users
         SET 
             is_verified = TRUE,
             verification_token = NULL
