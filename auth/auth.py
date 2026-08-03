@@ -89,12 +89,12 @@ def verify_email(token):
         )
 
         user = cursor.fetchone()
-        
+
         if not user:
-        return jsonify({
-            "success": False,
-            "message": "Invalid verification link."
-        }), 400
+            return jsonify({
+                "success": False,
+                "message": "Invalid verification link."
+            }), 400
 
         cursor.execute(
             """
