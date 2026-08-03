@@ -24,7 +24,6 @@
 #     mail.send(msg)
 
 
-
 import os
 import requests
 
@@ -40,6 +39,7 @@ def send_verification_mail(email, fullname, verification_link):
             "to": [{"email": email, "name": fullname}],
             "subject": "Verify your Email",
             "textContent": f"""
+
 Hello {fullname},
 
 Thank you for registering.

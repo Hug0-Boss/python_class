@@ -4,3 +4,4 @@ bcrypt = Bcrypt()
 
 from flask_mail import Mail
 mail = Mail()
+jwt = JWTManager()
