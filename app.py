@@ -1,4 +1,5 @@
 from flask import Flask, render_template #type: ignore
+import os
 from extension import (bcrypt, mail)
 from auth.auth import auth_bp
 from config import Config
