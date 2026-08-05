@@ -4,6 +4,7 @@ from extension import (bcrypt, mail)
 from auth.auth import auth_bp
 from config import Config
 from extension import jwt
+from flask_cors import CORS
 
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 
 jwt.init_app(app)
 bcrypt.init_app(app)
+CORS(app)  # Enable CORS for all routes
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
 app.config['MAIL_USE_TLS'] = Config.MAIL_USE_TLS
