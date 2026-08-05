@@ -2,11 +2,14 @@ from flask import Flask, render_template #type: ignore
 from extension import (bcrypt, mail)
 from auth.auth import auth_bp
 from config import Config
+from extension import jwt
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 
-
+jwt.init_app(app)
 bcrypt.init_app(app)
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
