@@ -136,9 +136,8 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute("""
-            "SELECT id, fullname, email, password, role, is_verified FROM Users WHERE email=%s",
-            (email,),
-        """)
+            SELECT id, fullname, email, password, role, is_verified FROM Users WHERE email=%s
+        """, (email,))
 
         user = cursor.fetchone()
 
