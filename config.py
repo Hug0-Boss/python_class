@@ -2,6 +2,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 class Config:
+
+    CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
+    CLOUDINARY_SECRET_KEY = os.getenv("CLOUDINARY_SECRET_KEY")
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
     GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
     SECRET_KEY = os.getenv("MY_SECRET_KEY")
