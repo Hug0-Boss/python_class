@@ -27,17 +27,35 @@ def course():
     free_count = data.get("free_count", 1)
     description = data.get("description", "")
     thumbnail = data.get("thumbnail", "")
-    status = data.get("status", "DRAFT")
+    status = data.get("status") or "DRAFT"
+
+    allowed_statuses = {"DRAFT", "PUBLISHED", "ARCHIVED"}
+    
+    if status not in allowed_statuses:
+    return jsonify({
+        "success": False,
+        "message": "Invalid course status. Must be DRAFT, PUBLISHED, or ARCHIVED."
+    }), 400
 
     if not title:
-        return jsonify({"success": False, "message": "Course title must be provided."}), 400
+    return jsonify({"success": False, "message": "Course title must be provided."}), 400
 
     title = title.strip()
     if not title:
         return jsonify({"success": False, "message": "Course title must not be empty."}), 400
-
-    if price is None or price <= 0:
+    
+    try:
+        price = float(data.get("price"))
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "message": "Price must be a valid number."}), 400
+    
+    if price <= 0:
         return jsonify({"success": False, "message": "Price must be greater than zero."}), 400
+    
+    try:
+        free_count = int(data.get("free_count", 1))
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "message": "free_count must be a valid whole number."}), 400
 
     slug = slugify(title)
     if not slug:
