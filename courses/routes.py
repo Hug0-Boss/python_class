@@ -32,13 +32,13 @@ def course():
     allowed_statuses = {"DRAFT", "PUBLISHED", "ARCHIVED"}
     
     if status not in allowed_statuses:
-    return jsonify({
-        "success": False,
-        "message": "Invalid course status. Must be DRAFT, PUBLISHED, or ARCHIVED."
-    }), 400
+        return jsonify({
+            "success": False,
+            "message": "Invalid course status. Must be DRAFT,   PUBLISHED, or ARCHIVED."
+        }), 400
 
     if not title:
-    return jsonify({"success": False, "message": "Course title must be provided."}), 400
+        return jsonify({"success": False, "message": "Course title must be provided."}), 400
 
     title = title.strip()
     if not title:
