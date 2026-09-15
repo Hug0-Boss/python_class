@@ -133,15 +133,15 @@ def create_module(course_id):
             if not course_row:
                 return jsonify({"success": False, "message": "Course not found."}), 404
 
-            if position is None:
+            if not position:
                 cursor.execute("""
-                    SELECT COALESCE(MAX(position), 0) + 1 AS next_position
+                    SELECT COALESCE(MAX(module_position), 0) + 1 AS next_position
                     FROM module WHERE course_id = %s
                 """, (course_id,))
                 position = cursor.fetchone()["next_position"]
 
             cursor.execute("""
-                INSERT INTO module (course_id, title, description, position)
+                INSERT INTO module (course_id, title, description, module_position)
                 VALUES (%s, %s, %s, %s)
             """, (course_id, title, description, position))
 
@@ -215,8 +215,8 @@ def get_course_module(course_id):
                 return jsonify({"success": False, "message": "Course not found."}), 404
 
             cursor.execute("""
-                SELECT id, course_id, title, description, position
-                FROM module WHERE course_id = %s ORDER BY position ASC
+                SELECT id, course_id, title, description, module_position
+                FROM module WHERE course_id = %s ORDER BY module_position ASC
             """, (course_id,))
 
             modules = cursor.fetchall()
@@ -253,7 +253,7 @@ def update_module(module_id):
         conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute("""
-                SELECT m.id, m.title, m.description, m.position
+                SELECT m.id, m.title, m.description, m.module_position
                 FROM module m
                 INNER JOIN course c ON m.course_id = c.id
                 WHERE m.id = %s AND c.instructor_id = %s
@@ -265,14 +265,14 @@ def update_module(module_id):
 
             title = data.get("title", module["title"])
             description = data.get("description", module["description"])
-            position = data.get("position", module["position"])
+            position = data.get("position", module["module_position"])
 
             title = title.strip()
             if not title:
                 return jsonify({"success": False, "message": "Title cannot be empty."}), 400
 
             cursor.execute("""
-                UPDATE module SET title = %s, description = %s, position = %s
+                UPDATE module SET title = %s, description = %s, module_position = %s
                 WHERE id = %s
             """, (title, description, position, module_id))
 
