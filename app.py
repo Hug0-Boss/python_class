@@ -19,7 +19,7 @@ CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(course_bp, url_prefix="/api/instructor")
-app.register_blueprint(st_course_bp, url_prefix="/api/student")
+# app.register_blueprint(st_course_bp, url_prefix="/api/student")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)

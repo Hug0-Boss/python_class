@@ -38,7 +38,7 @@ def get_student_courses():
 
 
 
-@st_course_bp.route("/courses/<int:course_id", methods=["GET"])
+@st_course_bp.route("/courses/<int:course_id>", methods=["GET"])
 @jwt_required()
 @student_required
 def get_course_details(course_id):
@@ -146,7 +146,7 @@ def get_course_details(course_id):
             conn.close()
 
 
-@st_course_bp.route("/lesson/<int:lesson_id", methods=["GET"])
+@st_course_bp.route("/lesson/<int:lesson_id>", methods=["GET"])
 @jwt_required()
 @student_required
 def get_student_lesson(lesson_id):
