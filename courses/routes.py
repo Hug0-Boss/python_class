@@ -496,7 +496,7 @@ def update_module_lessons(lesson_id):
                 return jsonify({"success": False, "message": "is_free must be a boolean value."}), 400
 
             cursor.execute("""
-                UPDATE lessons SET title = %s, description = %s, content_type = %s,
+                UPDATE lessons SET title = %s, content_type = %s,
                 content_url = %s, content_body = %s, is_free = %s
                 WHERE id = %s
             """, (title, content_type, content_url, content_body, is_free, lesson_id))
@@ -511,7 +511,6 @@ def update_module_lessons(lesson_id):
     finally:
         if conn:
             conn.close()
-
 
 @course_bp.route("/lessons/<int:lesson_id>", methods=["DELETE"])
 @jwt_required()
