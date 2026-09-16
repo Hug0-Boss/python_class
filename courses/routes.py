@@ -365,13 +365,13 @@ def create_lesson(module_id):
 
             cursor.execute("""
                 SELECT COALESCE(MAX(lesson_position), 0) + 1 AS next_position
-                FROM lesson WHERE module_id = %s
+                FROM lessons WHERE module_id = %s
             """, (module_id,))
 
             next_position = cursor.fetchone()["next_position"]
 
             cursor.execute("""
-                INSERT INTO lesson (module_id, title, content_type, content_url, content_body,
+                INSERT INTO lessons (module_id, title, content_type, content_url, content_body,
                 is_free, lesson_position, is_published)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """, (module_id, title, content_type, content_url, content_body, is_free, next_position, False))
@@ -429,7 +429,7 @@ def get_module_lessons(module_id):
                 SELECT id, module_id, title, description, content_type, content_url,
                 content_body, is_free, lesson_position, is_published, duration_seconds,
                 created_at, updated_at
-                FROM lesson WHERE module_id = %s ORDER BY lesson_position ASC
+                FROM lessons WHERE module_id = %s ORDER BY lesson_position ASC
             """, (module_id,))
 
             lessons = cursor.fetchall()
@@ -468,7 +468,7 @@ def update_module_lessons(lesson_id):
             cursor.execute("""
                 SELECT l.id, l.title, l.description, l.content_type, l.content_url,
                 l.content_body, l.is_free
-                FROM lesson l
+                FROM lessons l
                 INNER JOIN module m ON l.module_id = m.id
                 INNER JOIN course c ON m.course_id = c.id
                 WHERE l.id = %s AND c.instructor_id = %s
@@ -497,7 +497,7 @@ def update_module_lessons(lesson_id):
                 return jsonify({"success": False, "message": "is_free must be a boolean value."}), 400
 
             cursor.execute("""
-                UPDATE lesson SET title = %s, description = %s, content_type = %s,
+                UPDATE lessons SET title = %s, description = %s, content_type = %s,
                 content_url = %s, content_body = %s, is_free = %s
                 WHERE id = %s
             """, (title, description, content_type, content_url, content_body, is_free, lesson_id))
@@ -525,7 +525,7 @@ def delete_module_lessons(lesson_id):
         conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute("""
-                SELECT l.id FROM lesson l
+                SELECT l.id FROM lessons l
                 INNER JOIN module m ON l.module_id = m.id
                 INNER JOIN course c ON m.course_id = c.id
                 WHERE l.id = %s AND c.instructor_id = %s
@@ -535,7 +535,7 @@ def delete_module_lessons(lesson_id):
             if not lesson:
                 return jsonify({"success": False, "message": "Lesson not found or you do not own this lesson."}), 404
 
-            cursor.execute("DELETE FROM lesson WHERE id = %s", (lesson_id,))
+            cursor.execute("DELETE FROM lessons WHERE id = %s", (lesson_id,))
             conn.commit()
 
             return jsonify({"success": True, "message": "Lesson deleted successfully."}), 200
@@ -595,7 +595,7 @@ def upload_lesson_video(lesson_id):
             duration = upload_result.get("duration")
 
             cursor.execute("""
-                UPDATE lesson SET content_type = 'VIDEO', content_url = %s, duration_seconds = %s
+                UPDATE lessons SET content_type = 'VIDEO', content_url = %s, duration_seconds = %s
                 WHERE id = %s
             """, (video_url, duration, lesson_id))
 
