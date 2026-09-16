@@ -426,7 +426,7 @@ def get_module_lessons(module_id):
                 return jsonify({"success": False, "message": "Module not found or you do not own this module."}), 404
 
             cursor.execute("""
-                SELECT id, module_id, title, description, content_type, content_url,
+                SELECT id, module_id, title, content_type, content_url,
                 content_body, is_free, lesson_position, is_published, duration_seconds,
                 created_at, updated_at
                 FROM lessons WHERE module_id = %s ORDER BY lesson_position ASC
@@ -466,7 +466,7 @@ def update_module_lessons(lesson_id):
         conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute("""
-                SELECT l.id, l.title, l.description, l.content_type, l.content_url,
+                SELECT l.id, l.title, l.content_type, l.content_url,
                 l.content_body, l.is_free
                 FROM lessons l
                 INNER JOIN module m ON l.module_id = m.id
@@ -479,7 +479,6 @@ def update_module_lessons(lesson_id):
                 return jsonify({"success": False, "message": "Lesson not found or you do not own this lesson."}), 404
 
             title = data.get("title", lesson["title"])
-            description = data.get("description", lesson["description"])
             content_type = data.get("content_type", lesson["content_type"])
             content_url = data.get("content_url", lesson["content_url"])
             content_body = data.get("content_body", lesson["content_body"])
@@ -500,7 +499,7 @@ def update_module_lessons(lesson_id):
                 UPDATE lessons SET title = %s, description = %s, content_type = %s,
                 content_url = %s, content_body = %s, is_free = %s
                 WHERE id = %s
-            """, (title, description, content_type, content_url, content_body, is_free, lesson_id))
+            """, (title, content_type, content_url, content_body, is_free, lesson_id))
 
             conn.commit()
             return jsonify({"success": True, "message": "Lesson updated successfully."}), 200
